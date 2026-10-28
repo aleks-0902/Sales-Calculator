@@ -175,3 +175,5 @@ Python 示例：`ranked = sorted(products, key=lambda item: item["profitCents"],
 | 10 | 仅保留售价 0、成本 5、数量 1 的记录 | 总利润 −5、利润率“—”，提醒无收入但有成本，不出现 NaN/Infinity |
 
 既有自动测试和新增商业洞察测试均已通过。新增测试还覆盖无效数据、累计溢出、纯函数不修改源数据、重算衍生字段、同名并列记录、文本安全及刷新恢复。尚未进行本次真实浏览器视觉与兼容性测试。
+
+This project is published using GitHub Pages

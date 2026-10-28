@@ -1,0 +1,72 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>多商品销售分析 · Sales Studio</title>
+  <link rel="stylesheet" href="style.css">
+  <script src="script.js" defer></script>
+</head>
+<body>
+  <header class="topbar"><a class="brand" href="./index.html"><span class="logo">S</span> Sales Studio</a><span class="top-note">商业分析工具 <span class="dot"></span> 本地计算</span></header>
+  <main>
+    <div class="eyebrow">BUSINESS OVERVIEW / 销售概览</div>
+    <h1>每一笔销售，利润清晰可见<span>。</span></h1>
+    <p class="intro">汇集多款商品的销售数据，即时掌握整体收入、成本与利润。</p>
+    <div class="workspace">
+      <section class="panel input-panel" aria-labelledby="input-title">
+        <div class="section-heading"><div><span class="step">01 / INPUT</span><h2 id="input-title">添加商品</h2></div><button id="reset" type="button">重置输入</button></div>
+        <form id="calculator" novalidate>
+          <div class="field"><label for="product">商品名称</label><input id="product" type="text" value="MacBook" maxlength="80" required aria-describedby="product-error"><small id="product-error" class="error"></small></div>
+          <div class="field"><label for="price">商品售价 <span>元 / 件</span></label><div class="input-wrap"><span>¥</span><input id="price" type="number" min="0" step="0.01" value="8000" required aria-describedby="price-error"></div><small id="price-error" class="error"></small></div>
+          <div class="field"><label for="cost">商品成本 <span>元 / 件</span></label><div class="input-wrap"><span>¥</span><input id="cost" type="number" min="0" step="0.01" value="6200" required aria-describedby="cost-error"></div><small id="cost-error" class="error"></small></div>
+          <div class="field"><label for="quantity">销售数量 <span>件</span></label><input id="quantity" type="number" min="0" step="1" value="12" required aria-describedby="quantity-error"><small id="quantity-error" class="error"></small></div>
+          <p id="form-error" class="error" role="alert" tabindex="-1"></p>
+          <button id="save-product" class="primary-button" type="submit">＋ 添加到商品列表</button>
+          <button id="cancel-edit" class="cancel-edit" type="button" hidden>取消修改</button>
+          <div class="input-note"><span class="dot"></span> 添加或修改后自动更新；相同名称可重复添加</div>
+        </form>
+      </section>
+      <section class="results" aria-labelledby="result-title" aria-live="polite" aria-atomic="true">
+        <div class="result-heading"><div><span class="step">02 / INSIGHTS</span><h2 id="result-title">经营表现</h2></div><span id="status" class="badge">盈利中</span></div>
+        <div class="revenue card"><div class="metric-label">总销售额 <span>REVENUE</span></div><div class="metric-value" id="revenue">¥96,000.00</div><div class="metric-detail" id="sales-detail">MacBook · 12 件</div><div class="decor" aria-hidden="true">↗</div></div>
+        <div class="metric-grid"><div class="card"><div class="metric-label">总成本 <span>COST</span></div><div class="metric-value secondary" id="cost-total">¥74,400.00</div><div class="metric-detail">所有商品成本合计</div></div><div class="card"><div class="metric-label">总利润 <span>PROFIT</span></div><div class="metric-value secondary" id="profit">¥21,600.00</div><div class="metric-detail">销售额 − 总成本</div></div><div class="card"><div class="metric-label">整体利润率 <span>MARGIN</span></div><div class="metric-value secondary" id="margin">22.50%</div><p id="margin-rating" class="margin-rating margin-good">Good Profit Margin</p><div class="metric-detail">总利润 ÷ 总销售额</div></div></div>
+        <div class="panel breakdown"><div class="breakdown-title"><h3>收入构成</h3><span id="total-cost">总成本 ¥74,400.00</span></div><div class="bar" role="img" id="bar" aria-label="成本占比77.5%，利润占比22.5%"><div id="cost-bar"></div><div id="profit-bar"></div></div><div class="legend"><span><i class="cost-dot"></i> 成本 <b id="cost-ratio">77.50%</b></span><span><i class="profit-dot"></i> 利润 <b id="profit-ratio">22.50%</b></span></div><p id="insight">每销售一件商品，获得 ¥1,800.00 利润。</p></div>
+      </section>
+    </div>
+    <section class="panel product-panel" aria-labelledby="products-title">
+      <div class="section-heading"><div><span class="step">03 / PRODUCTS</span><h2 id="products-title">商品销售明细</h2></div><span class="badge neutral" id="product-count">1 条商品记录</span></div>
+      <p class="table-note" id="table-help">每条记录单独计算，可点击“修改”编辑。保存或删除后自动更新汇总与排行榜。小屏幕可横向滚动表格。</p>
+      <p id="storage-status" class="storage-status" role="status">正在读取本地数据…</p>
+      <div class="table-scroll" role="region" aria-label="商品销售明细，可横向滚动" tabindex="0" aria-describedby="table-help">
+        <table><caption class="sr-only">各商品售价、成本、数量及销售表现</caption><thead><tr><th scope="col">商品名称</th><th scope="col">售价 / 元</th><th scope="col">成本 / 元</th><th scope="col">数量</th><th scope="col">销售额</th><th scope="col">利润</th><th scope="col">利润率</th><th scope="col">操作</th></tr></thead><tbody id="product-rows"></tbody></table>
+      </div>
+      <p id="empty-state" class="empty-state" hidden>暂无商品。在上方填写数据并点击“添加到商品列表”开始分析。</p>
+    </section>
+    <section class="panel product-panel" aria-labelledby="ranking-title">
+      <div class="section-heading"><div><span class="step">04 / RANKING</span><h2 id="ranking-title">商品盈利排行榜</h2></div><span class="badge neutral">按总利润降序</span></div>
+      <p class="table-note" id="ranking-help">总利润 =（售价 − 成本）× 销售数量。利润相同时保留明细表原有顺序；每条商品记录独立排名。</p>
+      <div class="table-scroll" role="region" aria-label="商品盈利排行榜，可横向滚动" tabindex="0" aria-describedby="ranking-help">
+        <table class="ranking-table"><caption class="sr-only">按每条商品记录的总利润从高到低排列</caption><thead><tr><th scope="col">名次</th><th scope="col">商品名称</th><th scope="col">总利润</th><th scope="col">利润率</th></tr></thead><tbody id="ranking-rows"></tbody></table>
+      </div>
+      <p id="ranking-empty" class="empty-state" hidden>暂无可排名商品，添加商品后自动生成排行榜。</p>
+      <p id="ranking-warning" class="storage-status storage-warning" role="status" hidden></p>
+    </section>
+    <section class="panel product-panel" aria-labelledby="business-title">
+      <div class="section-heading"><div><span class="step">05 / BUSINESS INSIGHTS</span><h2 id="business-title">Business Insights · 商业洞察</h2></div><span class="badge neutral">固定规则分析</span></div>
+      <p class="table-note">根据当前已添加的商品记录自动计算。以下建议来自固定规则，并非 AI 模型生成；未计入税费、运费等其他支出。</p>
+      <div class="business-metrics">
+        <div><span class="metric-label">整体利润率</span><strong id="business-margin">—</strong></div>
+        <div><span class="metric-label">总利润</span><strong id="business-profit">—</strong></div>
+      </div>
+      <p id="business-data-note" class="storage-status storage-warning" role="status" hidden></p>
+      <div class="business-block"><h3>总利润最高的商品</h3><p id="business-top-note" class="table-note"></p><ul id="business-top" class="business-list"></ul></div>
+      <div class="business-block"><h3>低利润率提醒 · 低于 20%</h3><p id="business-low-note" class="table-note"></p><ul id="business-low" class="business-list business-alert"></ul><p id="business-zero-note" class="table-note"></p></div>
+      <div class="business-block"><h3>经营建议</h3><ul id="business-advice" class="business-list"></ul></div>
+    </section>
+    <p id="announcement" class="sr-only" role="status"></p>
+    <footer><span>SALES STUDIO <span class="footer-divider">/</span> 让商业决策更简单</span><span>计算仅包含商品成本，未计入税费、运费及其他支出。</span></footer>
+  </main>
+</body>
+</html>
+
